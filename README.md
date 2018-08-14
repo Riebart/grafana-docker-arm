@@ -13,7 +13,7 @@ Note that the script emits that built container name:tag on stdout if a containe
 
 ## Running it daily
 
-This isn't strictly necessary, as I run it hourly (or, will until Grafana produces official ARM docker containers) and push the results to https://hub.docker.com/r/riebart/grafana-arm, but there's no reason you should trust my images, so I've simplified running it via cron. My crontab line is:
+This isn't strictly necessary, as I run it hourly (or, will until Grafana produces official ARM docker containers) and push the results to [DockerHub](https://hub.docker.com/r/riebart/grafana-arm), but there's no reason you should trust my images, so I've simplified running it via cron. My crontab line is:
 
 ```crontab
 0 * * * * bash /home/pi/Documents/grafana-docker-arm/cronjob.sh riebart/grafana-arm

@@ -56,10 +56,6 @@ fi
 # Get the version identified in the tarball:
 version=$(basename "$tarball" | sed "s/grafana-\\(.*\\)\\.linux-${arch}.tar.gz/\\1/")
 
-echo $version
-
-exit
-
 # Pull down the Dockerfile and entrypoint script from the GitHub repo, either from the tagged version (if it exists), or the master branch otherwise.
 if wget -O Dockerfile "https://raw.githubusercontent.com/grafana/grafana/v${version}/packaging/docker/Dockerfile"
 then

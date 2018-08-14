@@ -47,11 +47,6 @@ fi
 # Get the URL for the latest tarball for armhf (ARMv7)
 tarball=$(wget -qO- "$grafana_download_url" | sed -n "s/^.*href=\"\\([^\"]*.linux-${arch}.tar.gz\\)\".*$/\\1/p")
 
-echo $tarball
-
-exit
-
-
 if [ "$tarball" == "" ]
 then
     echo "Tarball not found matching provided architecture"

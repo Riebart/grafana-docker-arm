@@ -45,9 +45,6 @@ else
     fi
 fi
 
-echo $current_arch
-exit
-
 # Get the URL for the latest tarball for armhf (ARMv7)
 tarball=$(wget -qO- "$grafana_download_url" | sed -n "s/^.*href=\"\\([^\"]*.linux-${arch}.tar.gz\\)\".*$/\\1/p")
 

@@ -19,4 +19,4 @@ This isn't strictly necessary, as I run it hourly (or, will until Grafana produc
 0 * * * * bash /home/pi/Documents/grafana-docker-arm/cronjob.sh riebart/grafana-arm
 ```
 
-This will attempt to build the latest stable (giving up if there's no new stable to build), and the latest nightly (which release about hourly, give or take) builds. If new versions of either exist, it'll tag them as `latest-<arch>` and `nightly-arch` respectively, and push them to the repository specified. Note that the repository can be a private one, that's totally fine.
+This will attempt to build the latest stable (giving up if there's no new stable to build), and the latest nightly (which release about hourly, give or take) builds. If new versions of either exist, it'll tag them as `latest-<arch>` and `nightly-<arch>` respectively, and push them to the repository specified. Note that the repository can be a private one, that's totally fine.

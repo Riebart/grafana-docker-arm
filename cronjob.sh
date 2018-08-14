@@ -8,7 +8,10 @@ then
     exit 1
 fi
 
+build_path="`dirname ${BASH_SOURCE[0]}`/build.sh"
+
 function image_tag {
+    # TODO: This won't work for repositories with colons in them, like private ones with ports.
     echo "$1" | cut -d ':' -f2-
 }
 
@@ -18,7 +21,7 @@ function image_arch {
 }
 
 # Build the latest stable release
-stable_image=`bash build.sh`
+stable_image=`bash "$build_path"`
 
 if [ "$stable_image" != "" ]
 then
@@ -31,11 +34,17 @@ then
 fi
 
 # Build the latest nightly release
-nightly_image=`bash build.sh "" "nightly"`
+nightly_image=`bash "$build_path" "" "nightly"`
 
 if [ "$nightly_image" != "" ]
 then
     tag=`image_tag "$nightly_image"`
+    arch=`image_arch "$nightly_image"`
     docker tag "$nightly_image" "$1:$tag"
     docker push "$1:$tag"
+    docker tag "$nightly_image" "$1:nightly-$arch"
+    docker push "$1:nightly-$arch"
 fi
+
+# A wee bit of housekeeping
+docker images --filter dangling=true -aq | xargs docker rmi

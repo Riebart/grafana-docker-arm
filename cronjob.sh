@@ -8,7 +8,8 @@ then
     exit 1
 fi
 
-build_path="`dirname ${BASH_SOURCE[0]}`/build.sh"
+build_path="`dirname ${BASH_SOURCE[0]}`"
+cd "$build_path"
 
 function image_tag {
     # TODO: This won't work for repositories with colons in them, like private ones with ports.
@@ -21,7 +22,7 @@ function image_arch {
 }
 
 # Build the latest stable release
-stable_image=`bash "$build_path"`
+stable_image=`bash build.sh`
 
 if [ "$stable_image" != "" ]
 then
@@ -34,7 +35,7 @@ then
 fi
 
 # Build the latest nightly release
-nightly_image=`bash "$build_path" "" "nightly"`
+nightly_image=`bash build.sh "" "nightly"`
 
 if [ "$nightly_image" != "" ]
 then

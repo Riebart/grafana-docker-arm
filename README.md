@@ -1,4 +1,4 @@
-# grafana-docker-arm
+# Grafana Docker Images for ARM
 
 Build script to build a Docker container for Grafana from the official Dockerfile for ARM architectures.
 

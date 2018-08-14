@@ -2,6 +2,7 @@
 set -e
 
 function allowed_versions {
+    # ARM wasn't supported before 5.2.0, so insert a sentinel value to find.
     versions=$(
         (echo 'value="5.2.0.==='; wget -qO- https://grafana.com/grafana/download | grep -o 'value="[^"]*"') | sort)
     after_line=$(echo "$versions" | grep -n "5.2.0.===" | cut -d ':' -f1)

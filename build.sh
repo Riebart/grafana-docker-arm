@@ -1,6 +1,13 @@
 #!/bin/bash
 set -e
 
+function allowed_versions {
+    versions=$(
+        (echo 'value="5.2.0.==='; wget -qO- https://grafana.com/grafana/download | grep -o 'value="[^"]*"') | sort)
+    after_line=$(echo "$versions" | grep -n "5.2.0.===" | cut -d ':' -f1)
+    echo "$versions" | tail -n +$[after_line+1] | cut -d '"' -f2
+}
+
 if [ $# -lt 1 ]
 then
     current_arch=$(uname -m)
@@ -18,12 +25,19 @@ else
         echo 'Usage: build.sh [armv7|arm64] [Grafana version >= 5.2.0]'
         echo "  If no architecture is provided, it is autodetected from uname"
         echo "  If no Grafana version is provided, the latest stable release is used"
+        echo "  If the provided Grafana version is \"nightly\", then the latest nightly build is used."
         exit 2
     else
         arch="$1"
         if [ $# -gt 1 ]
         then
-            grafana_download_url="https://grafana.com/grafana/download/${2}?platform=arm"
+            if [ "$2" == "nightly" ]
+            then
+                nightly_version=$(allowed_versions | tail -n1)
+                grafana_download_url="https://grafana.com/grafana/download/${nightly_version}?platform=arm"
+            else
+                grafana_download_url="https://grafana.com/grafana/download/${2}?platform=arm"
+            fi
         else
             grafana_download_url="https://grafana.com/grafana/download?platform=arm"
         fi
@@ -32,6 +46,11 @@ fi
 
 # Get the URL for the latest tarball for armhf (ARMv7)
 tarball=$(wget -qO- "$grafana_download_url" | sed -n "s/^.*href=\"\\([^\"]*.linux-${arch}.tar.gz\\)\".*$/\\1/p")
+
+echo $tarball
+
+exit
+
 
 if [ "$tarball" == "" ]
 then

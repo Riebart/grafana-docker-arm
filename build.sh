@@ -8,7 +8,8 @@ function allowed_versions {
     echo "$versions" | tail -n +$[after_line+1] | cut -d '"' -f2
 }
 
-if [ $# -lt 1 ]
+# If we don't specify a first argument, or it is an empty string, derive it from the uname machine.
+if [ $# -lt 1 ] || [ "$1" == "" ]
 then
     current_arch=$(uname -m)
     if [ "$current_arch" == "armv7l" ]
@@ -23,7 +24,7 @@ else
     if [ "$1" == "-h" ]
     then
         echo 'Usage: build.sh [armv7|arm64] [Grafana version >= 5.2.0]'
-        echo "  If no architecture is provided, it is autodetected from uname"
+        echo "  If no architecture is provided, or is an empty string, it is autodetected from uname"
         echo "  If no Grafana version is provided, the latest stable release is used"
         echo "  If the provided Grafana version is \"nightly\", then the latest nightly build is used."
         exit 2
@@ -43,6 +44,9 @@ else
         fi
     fi
 fi
+
+echo $current_arch
+exit
 
 # Get the URL for the latest tarball for armhf (ARMv7)
 tarball=$(wget -qO- "$grafana_download_url" | sed -n "s/^.*href=\"\\([^\"]*.linux-${arch}.tar.gz\\)\".*$/\\1/p")

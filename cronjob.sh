@@ -12,8 +12,7 @@ build_path="`dirname ${BASH_SOURCE[0]}`"
 cd "$build_path"
 
 function image_tag {
-    # TODO: This won't work for repositories with colons in them, like private ones with ports.
-    echo "$1" | cut -d ':' -f2-
+    docker images --format {{.Tag}} "$1"
 }
 
 function image_arch {
